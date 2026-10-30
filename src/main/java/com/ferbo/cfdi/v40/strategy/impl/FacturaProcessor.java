@@ -26,9 +26,5 @@ public class FacturaProcessor implements CFDIProcessor {
 	@Override
 	public void procesar(Comprobante comprobante, Map<String, Object> parametrosJasper) {
 		log.info("Ejecutando negocio de Factura...");
-        
-        // Las facturas no llevan complementos de pago/nómina, se va vacío o nulo
-        parametrosJasper.put("SUBREPORT_DIR", "reports/factura/v40/");
-		
 	}
 }

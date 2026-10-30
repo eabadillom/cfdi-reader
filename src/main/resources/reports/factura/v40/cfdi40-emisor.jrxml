@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final using JasperReports Library version 6.19.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cfdi-v40-emisor" pageWidth="283" pageHeight="40" columnWidth="283" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="622aa75d-b352-489d-9dff-89c1dbc7de24">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="CFDI40 Emisor Data Adapter"/>
+	<property name="com.jaspersoft.studio.report.description" value="Comprobante.Emisor"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="facAtrAdquirente" class="java.lang.String">
+		<fieldDescription><![CDATA[facAtrAdquirente]]></fieldDescription>
+	</field>
+	<field name="regimenFiscal" class="java.lang.String">
+		<fieldDescription><![CDATA[regimenFiscal]]></fieldDescription>
+	</field>
+	<field name="nombre" class="java.lang.String">
+		<fieldDescription><![CDATA[nombre]]></fieldDescription>
+	</field>
+	<field name="rfc" class="java.lang.String">
+		<fieldDescription><![CDATA[rfc]]></fieldDescription>
+	</field>
+	<detail>
+		<band height="36" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="47" height="12" forecolor="#FFFFFF" backcolor="#5C5C5C" uuid="5189a0bc-203b-40d0-8edb-e6ef8f533673">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#5C5C5C"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Emisor:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="12" width="47" height="12" forecolor="#FFFFFF" backcolor="#5C5C5C" uuid="c9191f13-0c9c-401f-bb36-01f86456297c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#5C5C5C"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[RFC:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="24" width="47" height="12" forecolor="#FFFFFF" backcolor="#5C5C5C" uuid="caebb067-eca9-4256-8abb-63505fefaa3e">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineColor="#5C5C5C"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Rég. Fiscal:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="47" y="0" width="236" height="12" uuid="266feeea-fadd-402e-86bc-580e548ba33c"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="47" y="12" width="112" height="12" uuid="5788ff49-12e7-4818-876d-e354e7610875"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rfc}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="47" y="24" width="112" height="12" uuid="161835c0-0d79-42ed-b169-c74989e3095d"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{regimenFiscal}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

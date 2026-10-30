@@ -54,7 +54,7 @@ public class FacturaJR {
             throw new IllegalStateException("El procesador asignado no definió un directorio de reportes válido.");
         }
         
-        String rutaReportePrincipal = subreportDir + "principal.jasper";
+        String rutaReportePrincipal = "reports/factura/v40/cfdi-v40.jasper";
         log.info("Buscando formato embebido en la ruta: " + rutaReportePrincipal);
 
         // 3. Obtener el archivo compilado .jasper desde los recursos internos del JAR

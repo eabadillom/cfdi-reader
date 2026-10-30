@@ -13,11 +13,15 @@ import java.util.Map;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import mx.gob.sat.cfdi.catalogos.CMetodoPago;
 import mx.gob.sat.cfdi.catalogos.CMoneda;
+import mx.gob.sat.cfdi.catalogos.CTipoDeComprobante;
+import mx.gob.sat.cfdi.catalogos.CUsoCFDI;
 import mx.gob.sat.cfdi.nomina12.Nomina;
 import mx.gob.sat.cfdi.pagos20.Pagos;
 import mx.gob.sat.cfdi.v40.Comprobante;
 import mx.gob.sat.sitio_internet.cfd.catalogos.nomina.CTipoNomina;
+// AJUSTA estos dos al paquete que defina tu cfdi.xjb (generados bajo mx.gob.sat.cfdi...)
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -26,6 +30,7 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.view.JasperViewer;
+
 
 /**
  * Utilidad estatica para probar reportes Jasper con datos de ejemplo.
@@ -39,7 +44,7 @@ import net.sf.jasperreports.view.JasperViewer;
  */
 public final class JrTest {
 
-    private static final String SUBREPORT_DIR = "reports/factura/";
+    private static final String SUBREPORT_DIR = "reports/";
     private static final String OUT_DIR = "target/jrtest";
 
     private JrTest() {
@@ -61,18 +66,18 @@ public final class JrTest {
             default:
                 params = paramsFactura();
         }
-        run(reporte, params, tipo, pdf);
+        run(reporte, params, comprobanteDS(), tipo, pdf);
     }
 
     // ------------------------------------------------------------------
     // Ejecucion
     // ------------------------------------------------------------------
 
-    public static void run(String reporteClasspath, Map<String, Object> params, String nombre, boolean pdf)
-            throws Exception {
+    public static void run(String reporteClasspath, Map<String, Object> params, JRDataSource principal,
+            String nombre, boolean pdf) throws Exception {
         JasperReport report = cargar(reporteClasspath);
-        // El datasource principal vacio: los datos llegan por parametros
-        JasperPrint print = JasperFillManager.fillReport(report, params, new net.sf.jasperreports.engine.JREmptyDataSource(1));
+        // DataSource principal: 1 registro = el Comprobante. El resto llega por parametros.
+        JasperPrint print = JasperFillManager.fillReport(report, params, principal);
 
         if (pdf) {
             new File(OUT_DIR).mkdirs();
@@ -136,7 +141,71 @@ public final class JrTest {
     // Datos de ejemplo (usa los beans reales de cfdi40-model)
     // ------------------------------------------------------------------
 
+    /**
+     * DataSource PRINCIPAL del reporte: una lista con un solo Comprobante.
+     * En Jasper los fields se declaran con rutas anidadas, p. ej.:
+     * serie, folio, fecha, total, emisor.rfc, emisor.nombre, receptor.rfc, receptor.usoCFDI
+     */
+    public static java.util.Collection<Comprobante> comprobanteLista() {
+        // Para el Data Adapter "Collection of JavaBeans" de Jaspersoft Studio
+        // (exige un metodo estatico que devuelva una Collection o un arreglo de beans).
+        return java.util.Collections.singletonList(comprobante());
+    }
+
+    public static List<Pagos.Pago> pagosLista() {
+        return PagosTest.generarPagos();
+    }
+
+    public static JRDataSource comprobanteDS() {
+        return new JRBeanCollectionDataSource(java.util.Collections.singletonList(comprobante()));
+    }
+
+    /** Comprobante de ejemplo (nuevo en cada llamada). */
+    public static Comprobante comprobante() {
+        Comprobante c = new Comprobante();
+        c.setVersion("4.0");
+        c.setSerie("A");
+        c.setFolio("1001");
+        c.setFecha(ahora());
+        c.setFormaPago("03");
+        c.setMetodoPago(CMetodoPago.PUE);
+        c.setMoneda(CMoneda.MXN);
+        c.setTipoDeComprobante(CTipoDeComprobante.I);
+        c.setExportacion("01");
+        c.setLugarExpedicion("06600");
+
+        Comprobante.Emisor em = new Comprobante.Emisor();
+        em.setRfc("EKU9003173C9");
+        em.setNombre("ESCUELA KEMPER URGATE");
+        em.setRegimenFiscal("601");
+        c.setEmisor(em);
+
+        Comprobante.Receptor re = new Comprobante.Receptor();
+        re.setRfc("XAXX010101000");
+        re.setNombre("PUBLICO EN GENERAL");
+        re.setDomicilioFiscalReceptor("06600");
+        re.setRegimenFiscalReceptor("616");
+        re.setUsoCFDI(CUsoCFDI.G_03);
+        c.setReceptor(re);
+
+        Comprobante.Conceptos cs = new Comprobante.Conceptos();
+        cs.getConcepto().addAll(listaConceptos());
+        c.setConceptos(cs);
+
+        BigDecimal subTotal = BigDecimal.ZERO;
+        for (Comprobante.Conceptos.Concepto k : cs.getConcepto()) {
+            subTotal = subTotal.add(k.getImporte());
+        }
+        c.setSubTotal(subTotal);
+        c.setTotal(subTotal.multiply(new BigDecimal("1.16")).setScale(2, java.math.RoundingMode.HALF_UP));
+        return c;
+    }
+
     public static JRDataSource conceptos() {
+        return new JRBeanCollectionDataSource(listaConceptos());
+    }
+
+    private static List<Comprobante.Conceptos.Concepto> listaConceptos() {
         List<Comprobante.Conceptos.Concepto> lista = new ArrayList<Comprobante.Conceptos.Concepto>();
         for (int i = 1; i <= 15; i++) { // 15 filas para probar salto de pagina
             Comprobante.Conceptos.Concepto c = new Comprobante.Conceptos.Concepto();
@@ -152,7 +221,7 @@ public final class JrTest {
             c.setObjetoImp("02");
             lista.add(c);
         }
-        return new JRBeanCollectionDataSource(lista);
+        return lista;
     }
 
     public static JRDataSource pagos() {

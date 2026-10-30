@@ -124,6 +124,6 @@ public class PagoProcessor implements CFDIProcessor {
                 }
             }
         }
-        parametrosJasper.put("SUBREPORT_DIR", "reports/pagos/v20/");
+        parametrosJasper.put("SUBREPORT_DIR_PAGOS", "reports/pagos/v20/");
     }
 }

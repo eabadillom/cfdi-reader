@@ -1,6 +1,7 @@
 package com.ferbo.cfdi.v40.service;
 
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +18,7 @@ import com.ferbo.cfdi.v40.strategy.impl.PagoProcessor;
 
 import mx.gob.sat.cfdi.nomina12.Nomina;
 import mx.gob.sat.cfdi.pagos20.Pagos;
+import mx.gob.sat.cfdi.tfd11.TimbreFiscalDigital;
 import mx.gob.sat.cfdi.v40.Comprobante;
 import mx.gob.sat.cfdi.v40.Comprobante.Conceptos.Concepto;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -41,7 +43,7 @@ public class CFDIReaderService {
 
         // 1. JAXB procesa el InputStream directamente en memoria
         //TODO Si se agregan más complementos del SAT, esta línea deberá agregar cada una de las clases que representan a cada complemento de pago.
-        JAXBContext context = JAXBContext.newInstance(Comprobante.class, Pagos.class, Nomina.class);
+        JAXBContext context = JAXBContext.newInstance(Comprobante.class, Pagos.class, Nomina.class, TimbreFiscalDigital.class);
         Unmarshaller unmarshaller = context.createUnmarshaller();
         Comprobante comprobante = (Comprobante) unmarshaller.unmarshal(xmlStream);
 
@@ -63,7 +65,7 @@ public class CFDIReaderService {
     
     public CFDIPrintWrapper ejecutarCargaJR(InputStream xmlStream) throws Exception {
         // 1. Parseo inicial en memoria
-        JAXBContext context = JAXBContext.newInstance(Comprobante.class);
+        JAXBContext context = JAXBContext.newInstance(Comprobante.class, Pagos.class, Nomina.class, TimbreFiscalDigital.class);
         Unmarshaller unmarshaller = context.createUnmarshaller();
         Comprobante comprobante = (Comprobante) unmarshaller.unmarshal(xmlStream);
 
@@ -71,16 +73,38 @@ public class CFDIReaderService {
         Map<String, Object> parametrosJasper = new HashMap<>();
 
         // 3. Extraer e inyectar lo común de CUALQUIER CFDI 4.0
+
+        // 3.1. Conceptos
         if (comprobante.getConceptos() != null) {
             List<Concepto> listaConceptos = comprobante.getConceptos().getConcepto();
             parametrosJasper.put("DS_CONCEPTOS", new JRBeanCollectionDataSource(listaConceptos));
         }
-        
-        // Parámetros informativos directos si no quieres navegar el objeto en Jasper
-        parametrosJasper.put("RFC_EMISOR", comprobante.getEmisor().getRfc());
-        parametrosJasper.put("RFC_RECEPTOR", comprobante.getReceptor().getRfc());
-        parametrosJasper.put("TOTAL", comprobante.getTotal());
 
+        // 3.2. Timbre Fiscal Digital (si existe)
+        if (comprobante.getComplemento() != null) {
+            for (Object comp : comprobante.getComplemento().getAny()) {
+                if (comp instanceof TimbreFiscalDigital) {
+                    TimbreFiscalDigital tfd = (TimbreFiscalDigital) comp;
+                    parametrosJasper.put("DS_TFD", new JRBeanCollectionDataSource(Arrays.asList(tfd)));
+                    break; // Solo necesitamos el primer TimbreFiscalDigital
+                }
+            }
+        }
+
+        // 3.3. Emisor, Receptor e Impuestos
+        if(comprobante.getEmisor() != null) {
+            parametrosJasper.put("DS_EMISOR", new JRBeanCollectionDataSource(Arrays.asList(comprobante.getEmisor())));
+        }
+
+        if(comprobante.getReceptor() != null) {
+            parametrosJasper.put("DS_RECEPTOR", new JRBeanCollectionDataSource(Arrays.asList(comprobante.getReceptor())));
+        }
+
+        if(comprobante.getImpuestos() != null) {
+            parametrosJasper.put("DS_IMPUESTOS", new JRBeanCollectionDataSource(Arrays.asList(comprobante.getImpuestos())));
+        }
+        parametrosJasper.put("SUBREPORT_DIR", "reports/factura/v40/");
+        
         // 4. Determinar tipo y delegar extracción del complemento
         TipoCFDI tipoDetectado = TipoCFDI.detectar(comprobante);
         CFDIProcessor procesador = procesadores.get(tipoDetectado);

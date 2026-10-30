@@ -23,10 +23,12 @@ Al diseñar o extender formatos en el futuro, declara los siguientes parámetros
 | Nombre del Parámetro | Tipo de Dato en Jasper (`Value Class Name`) | Ámbito | Descripción / Uso |
 | :--- | :--- | :--- | :--- |
 | **`DS_CONCEPTOS`** | `net.sf.jasperreports.engine.JRDataSource` | **Global** | Colección genérica de conceptos de la factura principal. |
-| **`SUBREPORT_DIR`** | `java.lang.String` | **Global** | Ruta interna del Classpath (ej. `reports/factura/`) para enlazar subreportes. |
-| **`RFC_EMISOR`** | `java.lang.String` | **Global** | Parámetro directo del RFC del Emisor. |
-| **`RFC_RECEPTOR`** | `java.lang.String` | **Global** | Parámetro directo del RFC del Receptor. |
-| **`TOTAL`** | `java.math.BigDecimal` | **Global** | Importe total del comprobante principal. |
+| **`DS_EMISOR`** | `net.sf.jasperreports.engine.JRDataSource` | **Global** | Colección genérica del Emisor. |
+| **`DS_RECEPTOR`** | `net.sf.jasperreports.engine.JRDataSource` | **Global** | Colección genérica del Receptor. |
+| **`DS_IMPUESTOS`** | `net.sf.jasperreports.engine.JRDataSource` | **Global** | Colección genérica de Impuestos del CFDI. |
+| **`DS_TFD`** | `net.sf.jasperreports.engine.JRDataSource` | **Global** | Colección genérica del Timbre Fiscal Digital. |
+| **`SUBREPORT_DIR`** | `java.lang.String` | **Global** | Ruta interna del Classpath (ej. `reports/factura/`) para enlazar subreportes relacionados al CFDI v4.0. |
+| **`SUBREPORT_DIR_PAGOS`** | `java.lang.String` | **Global** | Ruta interna del Classpath (ej. `reports/pagos/`) para enlazar subreportes relacionados al complemento de Pago 2.0. |
 | **`DS_PAGOS`** | `net.sf.jasperreports.engine.JRDataSource` | *Complemento Pagos* | Lista de objetos `mx.gob.sat.pagos20.Pagos.Pago`. |
 | **`DS_NOMINA_CORE`** | `net.sf.jasperreports.engine.JRDataSource` | *Complemento Nómina* | Nodo base encapsulado `mx.gob.sat.nomina12.Nomina`. |
 | **`DS_PERCEPCIONES`**| `net.sf.jasperreports.engine.JRDataSource` | *Complemento Nómina* | Conceptos de ingresos ordinarios/extraordinarios. |
@@ -46,15 +48,22 @@ cfdi-reader/
     └── main/
         └── resources/
             └── reports/
-                ├── factura/
-                │   ├── principal.jasper
-                │   └── principal.jrxml
-                ├── pagos/
-                │   ├── principal.jasper
-                │   └── subreporte_impuestos.jasper
-                └── nomina/
-                    ├── principal.jasper
-                    └── ...
+                ├── factura/v40
+                │           ├── principal.jasper
+                │           ├── principal.jrxml
+                │           ├── subreporte_emisor.jasper
+                │           ├── subreporte_emisor.jrxml
+                │           └── ...
+                ├── pagos/v20
+                │         ├── principal.jasper
+                │         ├── principal.jrxml
+                │         ├── subreporte_impuestos.jasper
+                │         ├── subreporte_impuestos.jrxml
+                │         └── ...
+                └── nomina/v12
+                           ├── principal.jasper
+                           ├── principal.jrxml
+                           └── ...
 ```
 
 ---

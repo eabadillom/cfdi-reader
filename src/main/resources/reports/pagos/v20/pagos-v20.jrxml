@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final using JasperReports Library version 6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pagos-v20" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a5a47b47-788d-47f4-8521-5e5f818a2f13">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="TFD_DA"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="certPago" class="byte[]">
+		<fieldDescription><![CDATA[certPago]]></fieldDescription>
+	</field>
+	<field name="ctaOrdenante" class="java.lang.String">
+		<fieldDescription><![CDATA[ctaOrdenante]]></fieldDescription>
+	</field>
+	<field name="formaDePagoP" class="java.lang.String">
+		<fieldDescription><![CDATA[formaDePagoP]]></fieldDescription>
+	</field>
+	<field name="cadPago" class="java.lang.String">
+		<fieldDescription><![CDATA[cadPago]]></fieldDescription>
+	</field>
+	<field name="tipoCadPago" class="java.lang.String">
+		<fieldDescription><![CDATA[tipoCadPago]]></fieldDescription>
+	</field>
+	<field name="tipoCambioP" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[tipoCambioP]]></fieldDescription>
+	</field>
+	<field name="fechaPago" class="javax.xml.datatype.XMLGregorianCalendar">
+		<fieldDescription><![CDATA[fechaPago]]></fieldDescription>
+	</field>
+	<field name="nomBancoOrdExt" class="java.lang.String">
+		<fieldDescription><![CDATA[nomBancoOrdExt]]></fieldDescription>
+	</field>
+	<field name="monto" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[monto]]></fieldDescription>
+	</field>
+	<field name="monedaP" class="mx.gob.sat.cfdi.catalogos.CMoneda">
+		<fieldDescription><![CDATA[monedaP]]></fieldDescription>
+	</field>
+	<field name="rfcEmisorCtaBen" class="java.lang.String">
+		<fieldDescription><![CDATA[rfcEmisorCtaBen]]></fieldDescription>
+	</field>
+	<field name="selloPago" class="byte[]">
+		<fieldDescription><![CDATA[selloPago]]></fieldDescription>
+	</field>
+	<field name="ctaBeneficiario" class="java.lang.String">
+		<fieldDescription><![CDATA[ctaBeneficiario]]></fieldDescription>
+	</field>
+	<field name="numOperacion" class="java.lang.String">
+		<fieldDescription><![CDATA[numOperacion]]></fieldDescription>
+	</field>
+	<field name="rfcEmisorCtaOrd" class="java.lang.String">
+		<fieldDescription><![CDATA[rfcEmisorCtaOrd]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="151" height="13" uuid="616cc3b1-3aea-40ee-aec4-0cfcfbfdb20c"/>
+				<textFieldExpression><![CDATA["Recepción de pagos v. 2.0"]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="572" height="13" uuid="ca3713e0-efeb-4d7f-8d80-2ca49f751d23"/>
+				<text><![CDATA[Pago]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="13" width="94" height="12" uuid="966fbbe9-ccd9-4822-bdf9-0531c460c2fb"/>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="25" width="94" height="12" uuid="ba01c868-b855-4686-8561-2935761ac26a"/>
+				<textFieldExpression><![CDATA[$F{fechaPago}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="94" y="13" width="94" height="12" uuid="548e4c69-e980-4cc1-af6e-f684b2010f96"/>
+				<text><![CDATA[Forma de pago]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="94" y="25" width="94" height="12" uuid="a1186a8d-93a6-4cf0-8e0d-fa827727cd72"/>
+				<textFieldExpression><![CDATA[$F{formaDePagoP}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

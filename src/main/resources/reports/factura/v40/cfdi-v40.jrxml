@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final using JasperReports Library version 6.19.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cfdi-v40" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="40caf765-1624-4700-bed7-81771de090ee">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="CFDI40 Data Adapter"/>
+	<property name="com.jaspersoft.studio.report.description" value=""/>
+	<parameter name="DS_EMISOR" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource">
+		<parameterDescription><![CDATA[Emisor]]></parameterDescription>
+	</parameter>
+	<parameter name="DS_RECEPTOR" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+	<parameter name="DS_CONCEPTOS" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+	<parameter name="DS_IMPUESTOS" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+	<parameter name="DS_TFD" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
+	<parameter name="DS_PAGOS" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+	<parameter name="SUBREPORT_DIR_PAGOS" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="exportacion" class="java.lang.String">
+		<fieldDescription><![CDATA[exportacion]]></fieldDescription>
+	</field>
+	<field name="subTotal" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[subTotal]]></fieldDescription>
+	</field>
+	<field name="condicionesDePago" class="java.lang.String">
+		<fieldDescription><![CDATA[condicionesDePago]]></fieldDescription>
+	</field>
+	<field name="metodoPago" class="mx.gob.sat.cfdi.catalogos.CMetodoPago">
+		<fieldDescription><![CDATA[metodoPago]]></fieldDescription>
+	</field>
+	<field name="total" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[total]]></fieldDescription>
+	</field>
+	<field name="moneda" class="mx.gob.sat.cfdi.catalogos.CMoneda">
+		<fieldDescription><![CDATA[moneda]]></fieldDescription>
+	</field>
+	<field name="sello" class="java.lang.String">
+		<fieldDescription><![CDATA[sello]]></fieldDescription>
+	</field>
+	<field name="lugarExpedicion" class="java.lang.String">
+		<fieldDescription><![CDATA[lugarExpedicion]]></fieldDescription>
+	</field>
+	<field name="tipoCambio" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[tipoCambio]]></fieldDescription>
+	</field>
+	<field name="descuento" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[descuento]]></fieldDescription>
+	</field>
+	<field name="tipoDeComprobante" class="mx.gob.sat.cfdi.catalogos.CTipoDeComprobante">
+		<fieldDescription><![CDATA[tipoDeComprobante]]></fieldDescription>
+	</field>
+	<field name="noCertificado" class="java.lang.String">
+		<fieldDescription><![CDATA[noCertificado]]></fieldDescription>
+	</field>
+	<field name="version" class="java.lang.String">
+		<fieldDescription><![CDATA[version]]></fieldDescription>
+	</field>
+	<field name="certificado" class="java.lang.String">
+		<fieldDescription><![CDATA[certificado]]></fieldDescription>
+	</field>
+	<field name="confirmacion" class="java.lang.String">
+		<fieldDescription><![CDATA[confirmacion]]></fieldDescription>
+	</field>
+	<field name="fecha" class="javax.xml.datatype.XMLGregorianCalendar">
+		<fieldDescription><![CDATA[fecha]]></fieldDescription>
+	</field>
+	<field name="folio" class="java.lang.String">
+		<fieldDescription><![CDATA[folio]]></fieldDescription>
+	</field>
+	<field name="serie" class="java.lang.String">
+		<fieldDescription><![CDATA[serie]]></fieldDescription>
+	</field>
+	<field name="formaPago" class="java.lang.String">
+		<fieldDescription><![CDATA[formaPago]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="143" splitType="Stretch">
+			<staticText>
+				<reportElement x="1" y="0" width="571" height="14" uuid="1c8e00af-eb08-4664-9f1d-7794357f5741"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[FACTURA]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="15" width="156" height="16" uuid="b615b0d4-9130-47a5-905c-e915a053a6b9"/>
+				<textFieldExpression><![CDATA["Folio: " + $F{serie}  + " - " + $F{folio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="161" y="15" width="222" height="16" uuid="3b72fea7-6506-4c7e-8b02-de0a22214358"/>
+				<textFieldExpression><![CDATA["Fecha de emisión: " + $F{fecha}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="0" y="33" width="283" height="38" uuid="1f97598c-8510-42e1-9180-c3fee4702173">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<dataSourceExpression><![CDATA[$P{DS_EMISOR}]]></dataSourceExpression>
+				<subreportExpression><![CDATA["reports/factura/v40/cfdi40-emisor.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="89" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="344" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="572" height="52" uuid="4853d2de-07fe-47a2-9f92-a682b5a9e816">
+					<printWhenExpression><![CDATA[$P{DS_PAGOS}  !=  null]]></printWhenExpression>
+				</reportElement>
+				<dataSourceExpression><![CDATA[$P{DS_PAGOS}]]></dataSourceExpression>
+				<subreportExpression><![CDATA["reports/pagos/v20/pagos-v20.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
